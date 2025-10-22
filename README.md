@@ -1,59 +1,47 @@
-# NfdonutFrontend
+# 🌍 Ngong Road Forest Doughnut Economics Impact Tracker
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+This **Canvas component** provides a detailed view of the **key performance indicators (KPIs)** used to measure the holistic impact of the forest project.  
+The metrics are structured around the **Doughnut Economics Model** to ensure accountability across **environmental, social, and economic** dimensions.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🎯 Core Focus
 
-```bash
-ng serve
-```
+The metrics are categorized into three essential pillars, demonstrating the project's success in operating within the *“safe and just space for humanity”*:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### 🌱 Ecological Value (The Ceiling)
+Metrics tracking environmental health, such as:
+- **Carbon Sequestration**
+- **Biodiversity**
 
-## Code scaffolding
+### 🤝 Social Value (The Foundation)
+Metrics focused on community well-being, such as:
+- **Jobs Created**
+- **Access to Resources**
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 💰 Economical Value (Viability)
+Metrics assessing financial efficiency and sustainability, such as:
+- **Cost Per Tree Planted**
+- **Ecotourism Revenue**
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## ⚙️ Technical Details
 
-```bash
-ng generate --help
-```
+This view is implemented as a **standalone Angular component** (`MetricsComponent`) and uses **Tailwind CSS** for a responsive, full-width layout.
 
-## Building
+- **Data:**  
+  Metric definitions are currently **hardcoded** within the `MetricsComponent` class for demonstration purposes.
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## 🧩 Frameworks & Tools
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- **Angular 19** (Standalone Components)
+- **Tailwind CSS**
+- **TypeScript**
+- **Component Communication via EventEmitter**
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+> 💡 *This component helps visualize impact metrics in line with the Doughnut Economics principles — ensuring a balance between ecological health, social equity, and economic resilience.*

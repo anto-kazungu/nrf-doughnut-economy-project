@@ -1,0 +1,112 @@
+<div class="p-4 md:p-8 min-h-screen w-full bg-stone-100 flex justify-center font-sans relative overflow-x-hidden">
+    <!-- Project Information Card -->
+    <div class="w-full bg-white rounded-xl p-6 md:p-10 shadow-xl transform transition duration-500 max-w-7xl">
+    
+    <!-- Logo, Title Header, and Navigation Buttons -->
+    <div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 pb-3 border-b-4 border-lime-300 mb-8">
+        <div class="flex items-center space-x-4">
+            <img 
+                src="./assets/images/ngong-forest-association-logo.png" 
+                alt="Organization Logo" 
+                class="h-14 w-14 object-contain rounded-full shadow-md"
+                onerror="this.onerror=null; this.src='https://placehold.co/60x60/84cc16/ffffff?text=LOGO'"
+            />
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 text-center">
+                Project Metrics: Measuring the Doughnut
+            </h1>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="flex space-x-3">
+            <button 
+                (click)="viewChangeRequest.emit('dashboard')"
+                class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+            >
+                &larr; Back to Dashboard
+            </button>
+            <button 
+                (click)="viewChangeRequest.emit('about')"
+                class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+            >
+                About Project
+            </button>
+        </div>
+    </div>
+    
+    <!-- === Main Content Area -->
+    <div class="w-full"> 
+        
+        <!-- 1. Metrics List Section (Now full width) -->
+        <div class="w-full space-y-10 p-4 bg-white rounded-lg">
+            
+            <h2 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-4 text-lime-600">
+                Comprehensive Impact Tracking Framework
+            </h2>
+            
+            <p class="text-gray-700 leading-relaxed mb-8">
+                These metrics are organized by the three core pillars of the Doughnut Economics Model (Ecological Ceiling, Social Foundation, and Economic Value) to provide a holistic view of the project’s success.
+            </p>
+
+            <!-- 1. Ecological Value -->
+            <section>
+                <h3 class="text-3xl font-bold text-lime-700 mb-6 flex items-center border-b pb-2">
+                    Ecological Value
+                </h3>
+                <!-- Grid to 3 columns for full width -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"> 
+                    <div *ngFor="let metric of ecologicalMetrics" class="bg-lime-50 p-5 rounded-lg border-l-4 border-lime-500 shadow-sm">
+                        <p class="text-xl font-semibold text-gray-800 mb-1">{{ metric.metric }}</p>
+                        <p class="text-sm font-medium text-lime-700 uppercase">{{ metric.unit }}</p>
+                        <p class="text-gray-600 mt-2 text-sm">{{ metric.focus }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Social Value -->
+            <section>
+                <h3 class="text-3xl font-bold text-blue-600 mb-6 flex items-center border-b pb-2">
+                    Social Value
+                </h3>
+                <!-- Grid to 3 columns for full width -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"> 
+                    <div *ngFor="let metric of socialMetrics" class="bg-blue-50 p-5 rounded-lg border-l-4 border-blue-500 shadow-sm">
+                        <p class="text-xl font-semibold text-gray-800 mb-1">{{ metric.metric }}</p>
+                        <p class="text-sm font-medium text-blue-700 uppercase">{{ metric.unit }}</p>
+                        <p class="text-gray-600 mt-2 text-sm">{{ metric.focus }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Economical Value -->
+            <section>
+                <h3 class="text-3xl font-bold text-amber-600 mb-6 flex items-center border-b pb-2">
+                    Economical Value
+                </h3>
+                <!-- Grid to 3 columns for full width -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"> 
+                    <div *ngFor="let metric of economicalMetrics" class="bg-amber-50 p-5 rounded-lg border-l-4 border-amber-500 shadow-sm">
+                        <p class="text-xl font-semibold text-gray-800 mb-1">{{ metric.metric }}</p>
+                        <p class="text-sm font-medium text-amber-700 uppercase">{{ metric.unit }}</p>
+                        <p class="text-gray-600 mt-2 text-sm">{{ metric.focus }}</p>
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+    </div>
+    <!-- === END Main Content Area === -->
+
+    <button 
+        (click)="viewChangeRequest.emit('dashboard')" 
+        class="mt-10 px-6 py-3 bg-lime-600 text-white rounded-xl font-semibold hover:bg-lime-700 transition shadow-md"
+        >
+        &larr; Back to Dashboard Overview
+    </button>
+    
+    </div>
+
+    <!-- Footer text  -->
+    <footer class="absolute bottom-4 right-4 text-xs text-gray-400 font-medium hidden sm:block">
+        CSTEMX | www.cstemx.com | 2025
+    </footer>
+</div>

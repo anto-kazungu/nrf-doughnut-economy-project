@@ -1,0 +1,293 @@
+
+<div class="p-4 md:p-8 min-h-screen w-full bg-stone-100 flex justify-center font-sans relative">
+    <!-- Dashboard Card -->
+    <div class="w-full bg-white rounded-xl p-6 md:p-10 shadow-xl transform transition duration-500">
+    
+    <!-- Logo and Title Header -->
+    <div class="flex items-center justify-center space-x-4 pb-3 border-b-4 border-lime-300 mb-8">
+        <img 
+            src="./assets/ngong-forest-association-logo.png" 
+            alt="Organization Logo" 
+            class="h-14 w-14 object-contain rounded-full shadow-md"
+            onerror="this.onerror=null; this.src='https://placehold.co/60x60/84cc16/ffffff?text=LOGO'"
+        />
+        <h1 class="text-3xl font-extrabold text-gray-800 text-center">
+            Ngong Road Forest (Doughnut Economy) Impact Tracker
+        </h1>
+    </div>
+    <!-- End Logo and Title Header -->
+
+    @if (isLoading()) {
+        <!-- Loading State Indicator -->
+        <div class="flex flex-col items-center justify-center h-64">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-lime-500 mb-4"></div>
+        <p class="text-gray-600 text-lg">Loading impact data from Database...</p>
+        </div>
+    } @else if (impactData().length === 0) {
+        <!-- Error/Empty State -->
+        <div class="flex flex-col items-center justify-center h-64">
+        <p class="text-red-500 text-lg font-semibold">Error loading data or no records found.</p>
+        <p class="text-gray-500">Please check the connection to the data source.</p>
+        </div>
+    } @else {
+        <!-- === Dashboard Content (Visible when data is loaded) === -->
+
+        <!-- Year Selection/Display Bar (Using Lime/Green Palette) -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-10 p-4 bg-lime-50/50 rounded-xl shadow-md border border-lime-200 space-y-3 sm:space-y-0">
+            <span class="text-xl font-bold text-lime-700">
+                Data Year: {{ currentYear() }}
+            </span>
+            
+            <div class="flex space-x-4">
+                <!-- Toggle Button for Automation -->
+                <button 
+                    (click)="toggleAutomation()"
+                    class="py-2 px-4 rounded-full font-semibold shadow-lg transition duration-300 transform hover:scale-[1.02]"
+                    [ngClass]="isAutomated() ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-lime-600 hover:bg-lime-700 text-white'"
+                >
+                    {{ isAutomated() ? 'Stop Auto-Play' : 'Start Auto-Play' }}
+                </button>
+                
+                <!-- Manual Step Button -->
+                <button 
+                    (click)="goToNextYear(false)"
+                    class="bg-green-700 text-white font-semibold py-2 px-6 rounded-full shadow-lg hover:bg-green-800 transition duration-300 transform hover:scale-[1.02]"
+                >
+                    Step to {{ nextYear() }}
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content Area: 3-Column Responsive Grid -->
+        <div class="flex flex-col xl:flex-row items-start justify-between space-y-10 xl:space-y-0 xl:space-x-8">
+        
+        <!-- 1. Radial Chart Visualization (Core Impact Score) -->
+        <div class="xl:w-1/3 w-full flex flex-col items-center p-4 bg-white rounded-lg border border-gray-100">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2 w-full text-center">
+            Annual Doughnut Economy Impact Score
+            </h2>
+            <div id="chart-container" class="relative w-full max-w-sm aspect-square">
+                <!-- SVG Chart Rendering -->
+                <svg viewBox="0 0 120 120" class="w-full h-full transform -rotate-90">
+                    <!-- Base Tracks -->
+                    <circle 
+                        cx="60" cy="60" r="48" fill="none" stroke="#E5E7EB" 
+                        stroke-width="14" class="opacity-75" 
+                    />
+                    <circle 
+                        cx="60" cy="60" r="32" fill="none" stroke="#E5E7EB" 
+                        stroke-width="14" class="opacity-75" 
+                    />
+                    <circle 
+                        cx="60" cy="60" r="16" fill="none" stroke="#E5E7EB" 
+                        stroke-width="14" class="opacity-75" 
+                    />
+
+                    <!-- Ecological Health (Outer Ring - Lime Green) -->
+                    <circle 
+                        cx="60" cy="60" r="48" fill="none" [attr.stroke]="colors[2]" 
+                        stroke-width="14" stroke-dasharray="301.6" 
+                        [attr.stroke-dashoffset]="ecologicalOffset()" 
+                        stroke-linecap="round"
+                        class="transition-all duration-1000 ease-out"
+                    />
+
+                    <!-- Economic Value (Middle Ring - Amber/Gold) -->
+                    <circle 
+                        cx="60" cy="60" r="32" fill="none" [attr.stroke]="colors[1]" 
+                        stroke-width="14" stroke-dasharray="201.06" 
+                        [attr.stroke-dashoffset]="economicOffset()" 
+                        stroke-linecap="round"
+                        class="transition-all duration-1000 ease-out"
+                    />
+
+                    <!-- Social Impact (Inner Ring - Sky Blue) -->
+                    <circle 
+                        cx="60" cy="60" r="16" fill="none" [attr.stroke]="colors[0]" 
+                        stroke-width="14" stroke-dasharray="100.53" 
+                        [attr.stroke-dashoffset]="socialOffset()" 
+                        stroke-linecap="round"
+                        class="transition-all duration-1000 ease-out"
+                    />
+                </svg>
+
+                <!-- Center Text for Total Score: FIXED to avoid overlap -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+                    <span class="text-3xl md:text-4xl font-extrabold text-gray-800">{{ totalScore() }}</span>
+                    <span class="text-sm font-medium text-gray-500 text-center">Total Score</span>
+                </div>
+            </div>
+            
+            <p class="mt-6 text-sm text-center text-gray-500">
+            Scores reflect annual review for the selected year.
+            </p>
+        </div>
+
+        <!-- 2. Detailed Metric Breakdown (Scores + Achievements) -->
+        <div class="xl:w-1/3 w-full space-y-8 p-4 bg-white rounded-lg border border-gray-100">
+            
+            <!-- A. Percentage Scores Section -->
+            <div>
+            <h2 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2 text-center xl:text-left">
+                Annual Impact Score Breakdown (%)
+            </h2>
+            
+            <div class="space-y-4">
+                @for (label of labels; track $index) {
+                <!-- Uses the new dynamic color palette for border/background -->
+                <div class="flex justify-between items-center p-3 bg-lime-50 rounded-lg shadow-sm border-l-4"
+                    [style.border-color]="colors[$index]">
+                    <span class="font-medium text-base text-gray-700">{{ label }}</span>
+                    <span class="text-xl font-bold text-gray-800 transition-colors duration-500">
+                    {{ chartData()[$index] }}%
+                    </span>
+                </div>
+                }
+            </div>
+            </div>
+
+            <!-- B. Programmatic Achievements Section -->
+            <div class="pt-4 border-t border-gray-100">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2 text-center xl:text-left">
+                Annual Programmatic Achievements (Totals)
+            </h2>
+
+            <div class="space-y-4">
+                <!-- Trees Planted Card (Lime Green) -->
+                <div class="flex justify-between items-center p-3 bg-white rounded-lg shadow-md border-l-4 border-lime-600">
+                    <span class="font-medium text-base text-gray-700">Trees Planted</span>
+                    <span class="text-xl font-bold text-gray-800 transition-colors duration-500">
+                        {{ treesPlanted().toLocaleString() }}
+                    </span>
+                </div>
+                
+                <!-- IGA Established Card (Amber/Gold) -->
+                <div class="flex justify-between items-center p-3 bg-white rounded-lg shadow-md border-l-4 border-amber-500">
+                    <span class="font-medium text-base text-gray-700">IGAs Established</span>
+                    <span class="text-xl font-bold text-gray-800 transition-colors duration-500">
+                        {{ igaEstablished() }}
+                    </span>
+                </div>
+                
+                <!-- Cleanups Done Card (Red - retained for urgency/cleanup focus) -->
+                <div class="flex justify-between items-center p-3 bg-white rounded-lg shadow-md border-l-4 border-red-500">
+                    <span class="font-medium text-base text-gray-700">Restoration/Clean-Ups</span>
+                    <span class="text-xl font-bold text-gray-800 transition-colors duration-500">
+                        {{ cleanupsDone() }}
+                    </span>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 3. Line Chart Visualization (Historical Trends) -->
+        <div class="xl:w-1/3 w-full p-4 bg-white rounded-lg border border-gray-100">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2 w-full text-center">
+            Historical Score Trends (Years)
+            </h2>
+            
+            <div class="relative w-full overflow-hidden" style="height: 350px;">
+                <svg viewBox="0 0 500 300" class="w-full h-full">
+                    <!-- Grid Lines -->
+                    <!-- Y-Axis line -->
+                    <line x1="50" y1="30" x2="50" y2="270" stroke="#E5E7EB" stroke-width="2" />
+                    <!-- X-Axis line -->
+                    <line x1="50" y1="270" x2="480" y2="270" stroke="#E5E7EB" stroke-width="2" />
+                    
+                    <!-- X-Axis Labels (Years) -->
+                    @for (data of impactData(); track data.year) {
+                    <text 
+                        [attr.x]="50 + $index * 107.5" 
+                        y="290" 
+                        text-anchor="middle" 
+                        class="text-xs fill-gray-600 font-medium"
+                    >
+                        {{ data.year }}
+                    </text>
+                    }
+
+                    <!-- Y-Axis Labels (Scores 0, 50, 100) -->
+                    <text x="40" y="270" text-anchor="end" dy="4" class="text-xs fill-gray-600">0</text>
+                    <text x="40" y="150" text-anchor="end" dy="4" class="text-xs fill-gray-600">50</text>
+                    <text x="40" y="30" text-anchor="end" dy="4" class="text-xs fill-gray-600">100</text>
+
+                    <!-- Ecological Line (Lime Green) -->
+                    <path 
+                        [attr.d]="getLinePath('ecological')" 
+                        fill="none" 
+                        [attr.stroke]="colors[2]" 
+                        stroke-width="3" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round"
+                    />
+                    <!-- Economic Line (Amber/Gold) -->
+                    <path 
+                        [attr.d]="getLinePath('economic')" 
+                        fill="none" 
+                        [attr.stroke]="colors[1]" 
+                        stroke-width="3" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round"
+                    />
+                    <!-- Social Line (Sky Blue) -->
+                    <path 
+                        [attr.d]="getLinePath('social')" 
+                        fill="none" 
+                        [attr.stroke]="colors[0]" 
+                        stroke-width="3" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round"
+                    />
+                    
+                    <!-- Legend -->
+                    <g transform="translate(380, 20)">
+                    <rect x="0" y="0" width="10" height="10" [attr.fill]="colors[0]" />
+                    <text x="15" y="9" class="text-xs fill-gray-700">Social</text>
+                    <rect x="0" y="15" width="10" height="10" [attr.fill]="colors[1]" />
+                    <text x="15" y="24" class="text-xs fill-gray-700">Economic</text>
+                    <rect x="0" y="30" width="10" height="10" [attr.fill]="colors[2]" />
+                    <text x="15" y="39" class="text-xs fill-gray-700">Ecological</text>
+                    </g>
+
+                </svg>
+            </div>
+            
+            <p class="mt-4 text-sm text-center text-gray-500">
+            The line chart always shows the full trend from 2021 to 2025.
+            </p>
+        </div>
+        </div>
+    }
+
+    <!-- Documentation Links Section -->
+    <div class="mt-12 pt-6 border-t border-gray-200 flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-8">
+
+        <!-- Trigger switch to About view -->
+        <a 
+            href="#" 
+            (click)="goToAbout($event)" 
+            class="text-sm font-semibold text-lime-600 hover:text-lime-800 transition duration-300"
+        >
+            About This Project
+        </a>
+
+        <!-- Trigger switch to metrics view -->
+        <a 
+            href="#" 
+            (click)="goToMetrics($event)" 
+            class="text-sm font-semibold text-lime-600 hover:text-lime-800 transition duration-300"
+        >
+            About The Metrics
+        </a>
+        </div>
+                <!-- END Documentation Links Section -->
+                
+    </div>
+
+    <!-- Footer text  -->
+    <footer class="absolute bottom-4 right-4 text-xs text-gray-400 font-medium">
+    CSTEMX | www.cstemx.com | 2025
+    </footer>
+</div>
+
+<router-outlet>
