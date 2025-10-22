@@ -111,10 +111,10 @@ export class DashboardComponent implements OnInit {
   private async fetchImpactData(retries: number = 3): Promise<ImpactData[]> {
     // --- Mock Data simulating MongoDB API response ---
     const mockData: ImpactData[] = [
-      { year: 2021, scores: { social: 50, economic: 45, ecological: 60 }, achievements: { trees: 100000, igas: 8, cleanups: 50 } },
+      { year: 2021, scores: { social: 50, economic: 45, ecological: 58 }, achievements: { trees: 80000, igas: 8, cleanups: 50 } },
       { year: 2022, scores: { social: 55, economic: 50, ecological: 65 }, achievements: { trees: 150000, igas: 12, cleanups: 85 } },
-      { year: 2023, scores: { social: 60, economic: 55, ecological: 70 }, achievements: { trees: 220000, igas: 15, cleanups: 100 } },
-      { year: 2024, scores: { social: 65, economic: 60, ecological: 75 }, achievements: { trees: 300000, igas: 18, cleanups: 120 } },
+      { year: 2023, scores: { social: 40, economic: 48, ecological: 61 }, achievements: { trees: 900000, igas: 12, cleanups: 100 } },
+      { year: 2024, scores: { social: 50, economic: 60, ecological: 75 }, achievements: { trees: 250000, igas: 16, cleanups: 80 } },
       { year: 2025, scores: { social: 70, economic: 65, ecological: 80 }, achievements: { trees: 450000, igas: 20, cleanups: 150 } },
     ];
     // ----------------------------------------------------
